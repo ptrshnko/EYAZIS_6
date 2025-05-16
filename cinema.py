@@ -38,9 +38,8 @@ def retrieve_cinema_data(query, top_k=3):
     for idx, row in movies_df.iterrows():
         score = max(
             fuzz.partial_ratio(query, row['movie'].lower()),
-            fuzz.partial_ratio(query, row['genres'].lower()),
             fuzz.partial_ratio(query, row['overview'].lower()),
-            fuzz.partial_ratio(query, row['directors'].lower()),
+            fuzz.partial_ratio(query, row['director'].lower()),
             fuzz.partial_ratio(query, row['actors'].lower())
         )
         if score > 50:  # Порог для релевантности
@@ -62,9 +61,8 @@ def generate_response(query):
     context = "Найденная информация:\n"
     for item in relevant_data:
         context += f"- Фильм: {item['movie']} ({item['year']}, {item['country']}, рейтинг: {item['rating']})\n"
-        context += f"  Жанры: {item['genres']}\n"
         context += f"  Описание: {item['overview']}\n"
-        context += f"  Режиссёр: {item['directors']}\n"
+        context += f"  Режиссёр: {item['director']}\n"
         context += f"  Актёры: {item['actors']}\n"
     
     # Формирование промпта для Together AI
@@ -104,7 +102,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     🎬 Я бот по кинематографии! Могу:
     - Рассказать о фильмах (например, "Расскажи о 'Начало'").
     - Дать информацию о режиссёрах или актёрах (например, "Фильмы с Томом Хэнксом").
-    - Порекомендовать фильмы по жанру (например, "Порекомендуй комедию").
     - Показать историю диалогов (/history).
     - Очистить историю (/clear_history).
     Задай вопрос, и я помогу!

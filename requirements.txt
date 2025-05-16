@@ -1,0 +1,6 @@
+pandas==2.2.2
+python-telegram-bot==20.7
+together==1.2.1
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.25.1
+sqlite3
